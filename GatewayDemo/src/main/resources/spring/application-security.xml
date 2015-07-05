@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns:b="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/security"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	<http pattern="/resources/**" security="none" />
+	<http pattern="/login.jsp" security="none" />
+	<http use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint">
+		<logout />
+		<csrf disabled="true" />
+		<intercept-url pattern="/**" access="hasRole('ROLE_USERS')" />
+		<custom-filter ref="uNameAndpWordFilter" position="FORM_LOGIN_FILTER" />
+	</http>
+
+	<b:bean id="uNameAndpWordFilter"
+		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+		<b:property name="filterProcessesUrl" value="/j_spring_security_check" />
+		<b:property name="authenticationManager" ref="authenticationManager" />
+		<b:property name="authenticationFailureHandler" ref="authenticationFailureHandler" />
+		<b:property name="authenticationSuccessHandler" ref="authenticationSuccessHandler" />
+	</b:bean>
+
+	<b:bean id="authenticationFailureHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+		<b:property name="defaultFailureUrl" value="/login.jsp?error" />
+	</b:bean>
+
+	<b:bean id="authenticationSuccessHandler"
+		class="com.demo.security.handler.SuccessHandler">
+		<b:property name="defaultTargetUrl" value="/loadUserProfile.do" />
+	</b:bean>
+
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider user-service-ref="userDetailsService">
+			<password-encoder ref="encoder">
+			</password-encoder>
+		</authentication-provider>
+	</authentication-manager>
+
+	<b:bean id="userDetailsService" class="com.demo.security.RemoteUserDetailsService"></b:bean>
+
+	<b:bean id="authenticationProcessingFilterEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<b:constructor-arg index="0" value="/login.jsp" />
+	</b:bean>
+
+	<b:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+		<b:constructor-arg name="strength" value="9" />
+	</b:bean>
+
+</b:beans>
