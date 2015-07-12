@@ -50,4 +50,8 @@
 		<property name="serviceInterface" value="com.demo.service.UserService"></property>
 	</bean>
 	
+	<bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+		<constructor-arg name="strength" value="9" />
+	</bean>
+	
 </beans>

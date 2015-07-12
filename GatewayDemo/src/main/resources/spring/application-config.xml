@@ -5,11 +5,17 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
     
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    	<property name="location" value="classpath:conf.properties"/>
+    </bean>
+    
 	<context:component-scan base-package="com.demo.*"/>
 	
 	<bean id="remotingUserService" class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
-		<property name="serviceUrl" value="http://localhost:8080/ServiceDemo/remoting/UserService"/>
+		<property name="serviceUrl" value="${remote.url}/ServiceDemo/remoting/UserService"/>
 		<property name="serviceInterface" value="com.demo.service.UserService"></property>
 	</bean>
+	
+	<import resource="session.xml"/>
 	
 </beans>

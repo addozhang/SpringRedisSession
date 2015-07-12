@@ -53,7 +53,11 @@ $(document).ready(function(e){
 			contentType: "application/json", 
 			data: JSON.stringify($("#ajaxform").serializeObject()),
 			success: function(data, status){
-				
+				if(data.ErrorCode != undefined){
+					alert(data.Msg);
+				}else{
+					location="<c:url value="/loadUserProfile.do"/>";
+				}
 			},
 			error: function(){
 				
@@ -64,18 +68,15 @@ $(document).ready(function(e){
 </script>
 </head>
 <body>
-<c:if test="${not empty userprofile}">
-<form id="ajaxform" action="<c:url value="/updateUserProfile.do"/>" method="POST">
-	<input type="hidden" name="id" name="username" value="${userprofile.id}">
-	Username: <input type="text" name="usernameMock" disabled value="${userprofile.username}"><br>
+<form id="ajaxform" action="<c:url value="/register.do"/>" method="POST">
+	Username: <input type="text" name="username" value=""><br>
 	Password: <input type="password" id="password" name="password" value=""><br>
 	Password Repeat: <input type="password" id="passwordRp" name="passwordRp" value=""><span id="pwdCheck"></span><br>
-	Email: <input type="input" name="email" value="${userprofile.email}"><br>
-	Industry: <label><input type="checkbox" name="industry" ${fn:indexOf(userprofile.industry, 'lighting') > -1 eq true ? "checked" : ""} value="lighting">灯饰</label>
-	<label><input type="checkbox" name="industry" ${fn:indexOf(userprofile.industry, 'dress') > -1 eq true ? "checked" : ""} value="dress">服装</label>
-	 <label><input type="checkbox" name="industry" ${fn:indexOf(userprofile.industry, 'toy') > -1 eq true ? "checked" : ""} value="toy">玩具</label><br>
+	Email: <input type="input" name="email" value=""><br>
+	Industry: <label><input type="checkbox" name="industry" value="lighting">灯饰</label>
+	<label><input type="checkbox" name="industry" value="dress">服装</label>
+	 <label><input type="checkbox" name="industry" value="toy">玩具</label><br>
 	 <input type="button" disabled id="button" value="submit">
 </form>
-</c:if>
 </body>
 </html>

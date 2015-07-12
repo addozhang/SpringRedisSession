@@ -7,6 +7,8 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 	<http pattern="/resources/**" security="none" />
 	<http pattern="/login.jsp" security="none" />
+	<http pattern="/register.do" security="none" />
+	<http pattern="/register.jsp" security="none" />
 	<http use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint">
 		<logout />
 		<csrf disabled="true" />

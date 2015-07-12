@@ -61,6 +61,7 @@ public class UserDaoImpl implements UserDao {
 		Session session = sessionFactory.openSession();
 		try {
 			session.saveOrUpdate(user);
+			session.flush();
 		} finally {
 			session.close();
 		}
